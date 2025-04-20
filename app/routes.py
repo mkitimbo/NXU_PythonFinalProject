@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect
-from app import mongo  # no circular import because it's imported after init in create_app()
+from flask import Blueprint, render_template, request, redirect, current_app
+from flask_pymongo import PyMongo
 from .models import User
 
 main = Blueprint('main', __name__)
@@ -18,7 +18,9 @@ def index():
             if mongo.db is None:
                 return "MongoDB not initialized", 500
 
-            db = mongo.db  # Access after init_app has run
+            #db = mongo.db  # Access after init_app has run
+            mongo = PyMongo(current_app)
+            db = mongo.db
             db.survey_responses.insert_one(user.to_dict())
 
             # Save to CSV using internal method
