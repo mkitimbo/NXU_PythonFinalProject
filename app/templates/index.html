@@ -87,5 +87,34 @@
             input.addEventListener('input', calculateTotal);
         });
     </script>
+
+    <!-- Success Message Box -->
+<div id="success-message" class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg hidden z-50">
+    <strong class="font-bold">Success!</strong>
+    <span class="block sm:inline">Your responses have been submitted successfully.</span>
+</div>
+
+<script>
+    const form = document.querySelector('form');
+    const successMessage = document.getElementById('success-message');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent actual form submission for demo purposes
+
+        // Here you'd normally send the data using fetch/AJAX or allow the form to submit.
+        // Simulating a successful submission:
+        successMessage.classList.remove('hidden');
+
+        // Optionally hide the message after a few seconds
+        setTimeout(() => {
+            successMessage.classList.add('hidden');
+            form.reset();
+            totalDisplay.value = '';
+
+            // Redirect to the specified URL
+            window.location.href = "https://www.flexiblex.com/";
+        }, 4000); // 4 seconds before redirection
+    });
+</script>
 </body>
 </html>
