@@ -1,29 +1,25 @@
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
-from pymongo.mongo_client import MongoClient
+from dotenv import load_dotenv
+
+# Load environment variables from .env if available
+load_dotenv()
 
 mongo = PyMongo()
 
 def create_app():
     app = Flask(__name__)
 
-    # Load MONGO_URI from environment variable
-    app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+    mongo_uri = os.getenv("MONGO_URI")
+    if not mongo_uri:
+        raise ValueError("❌ MONGO_URI is not set. Please check your environment variables.")
 
-    # Initialize Mongo with Flask app
+    # Apply config and init Mongo
+    app.config["MONGO_URI"] = mongo_uri
     mongo.init_app(app)
 
-    # Optional: Test the MongoDB connection
-    try:
-        uri = app.config["MONGO_URI"]
-        client = MongoClient(uri)
-        client.admin.command('ping')
-        print("✅ Successfully connected to MongoDB!")
-    except Exception as e:
-        print("❌ MongoDB connection failed:", e)
-
-    # Import and register blueprint
+    # Register blueprints
     from app.routes import main
     app.register_blueprint(main)
 
