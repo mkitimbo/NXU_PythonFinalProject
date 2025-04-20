@@ -1,12 +1,11 @@
 from flask import Blueprint, render_template, request, redirect
+from app import mongo  # ✅ import once at the top
 from .models import User
 
 main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    from app import mongo  # ✅ import inside the function to avoid early import before init_app
-
     if request.method == 'POST':
         try:
             user_data = request.form.to_dict(flat=False)
@@ -16,9 +15,9 @@ def index():
             if mongo.db is None:
                 return "MongoDB not initialized", 500
 
-            # Save to MongoDB
-            db = mongo.db
-            db.survey_responses.insert_one(user.to_dict())
+           # ✅ mongo.db is safe here because Flask app context exists
+            mongo.db.survey_responses.insert_one(user.to_dict())
+            #db.survey_responses.insert_one(user.to_dict())
 
             # Save to CSV using internal method
             user.save_to_csv()
