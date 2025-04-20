@@ -10,7 +10,8 @@ def create_app():
  
     
     # MongoDB Atlas connection string
-    app.config["MONGO_URI"] = "mongodb+srv://mkitimbo:txaHdneje2CZmkOt@kmt.tslnr0v.mongodb.net/income_db?retryWrites=true&w=majority&tls=true"
+    #app.config["MONGO_URI"] = "mongodb+srv://mkitimbo:txaHdneje2CZmkOt@kmt.tslnr0v.mongodb.net/income_db?retryWrites=true&w=majority&tls=true"
+    app.config["MONGO_URI"] = os.getenv("MONGO_URI")
     
     mongo.init_app(app)
 
