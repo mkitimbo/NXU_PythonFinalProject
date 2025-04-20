@@ -1,0 +1,32 @@
+{% comment %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Income Survey</title>
+</head>
+<body>
+    <h1>Participant Survey</h1>
+    <form method="POST">
+        Age: <input type="number" name="age" required><br>
+        Gender: 
+        <select name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br>
+        Total Income: <input type="number" name="income" required><br>
+
+        <h3>Expenses</h3>
+        {% for category in ['utilities', 'entertainment', 'school_fees', 'shopping', 'healthcare'] %}
+            <input type="checkbox" name="categories" value="{{ category }}">{{ category.capitalize() }}: 
+            <input type="number" name="{{ category }}" step="0.01"><br>
+        {% endfor %}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+""" {% endcomment %}
+
+
+
