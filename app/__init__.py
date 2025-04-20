@@ -1,21 +1,30 @@
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
+from pymongo.mongo_client import MongoClient
 
 mongo = PyMongo()
 
 def create_app():
     app = Flask(__name__)
-    # MongoDB Atlas connection string
-    #app.config["MONGO_URI"] = "mongodb+srv://mkitimbo:txaHdneje2CZmkOt@kmt.tslnr0v.mongodb.net/income_db?retryWrites=true&w=majority&tls=true"
-    #app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-   # mongo_uri = os.environ.get("MONGO_URI", "mongodb+srv://mkitimbo:txaHdneje2CZmkOt@kmt.tslnr0v.mongodb.net/income_db?retryWrites=true&w=majority&tls=true")
-    
+
+    # Load MONGO_URI from environment variable
     app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+
+    # Initialize Mongo with Flask app
     mongo.init_app(app)
 
-   #Import blueprints here to avoid circular imports
+    # Optional: Test the MongoDB connection
+    try:
+        uri = app.config["MONGO_URI"]
+        client = MongoClient(uri)
+        client.admin.command('ping')
+        print("✅ Successfully connected to MongoDB!")
+    except Exception as e:
+        print("❌ MongoDB connection failed:", e)
+
+    # Import and register blueprint
     from app.routes import main
     app.register_blueprint(main)
-    
+
     return app
