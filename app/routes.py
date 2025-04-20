@@ -28,3 +28,13 @@ def index():
             return f"An error occurred: {e}", 500
 
     return render_template('index.html')
+
+
+# ✅ MongoDB connection test route
+@main.route('/test-mongo')
+def test_mongo():
+    try:
+        collections = mongo.db.list_collection_names()
+        return f"✅ MongoDB connection successful. Collections: {collections}"
+    except Exception as e:
+        return f"❌ MongoDB connection failed: {e}", 500
