@@ -12,8 +12,8 @@ def index():
             user = User(user_data)
 
             # Check if MongoDB is initialized
-            #if mongo.db is None:
-                #return "MongoDB not initialized", 500
+            if mongo.db is None:
+                return "MongoDB not initialized", 500
 
            # ✅ mongo.db is safe here because Flask app context exists
             mongo.db.survey_responses.insert_one(user.to_dict())
