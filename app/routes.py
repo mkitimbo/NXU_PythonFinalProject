@@ -13,7 +13,13 @@ def index():
             user = User(user_data)
 
             # Save to MongoDB
-            mongo.db.survey_responses.insert_one(user.to_dict())
+           # mongo.db.survey_responses.insert_one(user.to_dict())
+
+            if mongo.db is None:
+                return "MongoDB not initialized", 500
+
+            db = mongo.db  # Access after init_app has run
+            db.survey_responses.insert_one(user.to_dict())
 
             # Save to CSV using internal method
             user.save_to_csv()
